@@ -1,0 +1,4 @@
+,MAE,RMSE,MAPE
+Seasonal Naive,4.342,5.32,4.145
+SARIMA,3.589,4.657,3.408
+Timestral-28M,3.662,4.623,3.489

@@ -1,0 +1,6 @@
+,MAE,MAE,RMSE,RMSE,MAPE,MAPE
+,mean,std,mean,std,mean,std
+Model,,,,,,
+SARIMA,2.749,0.637,3.536,0.847,2.671,0.592
+Timestral-28M,2.794,0.537,3.551,0.722,2.708,0.503
+Seasonal Naive,3.274,0.934,4.327,1.244,3.147,0.886
