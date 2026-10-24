@@ -25,25 +25,33 @@ This notebook puts [Mistral's Timestral-28M](https://huggingface.co/mistralai/Ti
 
 Rolling backtest, 5 folds (lower is better):
 
-<!-- Paste the markdown table printed by the notebook (section 6) here -->
-
 | Model | MAE (mean) | MAE (std) | RMSE (mean) | RMSE (std) | MAPE % (mean) | MAPE % (std) |
 |---|---|---|---|---|---|---|
-| Seasonal Naive | – | – | – | – | – | – |
-| SARIMA | – | – | – | – | – | – |
-| Timestral-28M | – | – | – | – | – | – |
+| SARIMA | 2.749 | 0.637 | 3.536 | 0.847 | 2.671 | 0.592 |
+| Timestral-28M | 2.794 | 0.537 | 3.551 | 0.722 | 2.708 | 0.503 |
+| Seasonal Naive | 3.274 | 0.934 | 4.327 | 1.244 | 3.147 | 0.886 |
+
+Single 12-month hold-out (Feb 2017 – Jan 2018):
+
+| Model | MAE | RMSE | MAPE % |
+|---|---|---|---|
+| SARIMA | 3.589 | 4.657 | 3.408 |
+| Timestral-28M | 3.662 | 4.623 | 3.489 |
+| Seasonal Naive | 4.342 | 5.320 | 4.145 |
 
 ![Rolling backtest](figures/05_rolling_backtest.png)
 
 **Key findings**
 
-- _Add 2–3 bullets once you have the numbers._
+- Zero-shot Timestral-28M is effectively tied with a fitted SARIMA: 2.71% vs 2.67% mean MAPE across 5 folds, a gap well inside the fold-to-fold spread. Both beat seasonal naive by roughly 15%.
+- Timestral was the most stable model, with the lowest standard deviation on every metric across folds.
+- On the hold-out year, 10 of 12 actuals fell inside both the 80% and 90% intervals (83%), so the 90% band runs slightly narrow. Both misses are at the edges: Feb 2017, which came in well below forecast, and the sharp Jan 2018 peak, which all three models underestimate.
 
 ## Run it yourself
 
 ```bash
-git clone https://github.com/<your-username>/timestral-electricity-forecasting.git
-cd timestral-electricity-forecasting
+git clone https://github.com/jaslabana/experiments.git
+cd experiments/timestral-electricity-forecasting
 
 python -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
@@ -52,7 +60,13 @@ pip install -r requirements.txt
 jupyter lab timestral_electricity_forecasting.ipynb
 ```
 
-The dataset is included in `data/`. If it's missing, see [data/README.md](data/README.md) or run `python scripts/download_data.py`.
+Then fetch the dataset into `data/` (see [data/README.md](data/README.md) for details):
+
+```bash
+python scripts/download_data.py
+```
+
+Use Python 3.10–3.12; very new Python releases may not have PyTorch wheels yet.
 
 The first run downloads the Timestral-28M weights from Hugging Face. Inference runs fine on CPU.
 
