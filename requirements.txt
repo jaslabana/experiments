@@ -1,0 +1,8 @@
+numpy
+pandas
+matplotlib
+statsmodels
+scikit-learn
+tabulate
+jupyterlab
+timestral @ git+https://github.com/mistralai/timestral.git
